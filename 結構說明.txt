@@ -1,0 +1,56 @@
+【Alan Python MySQL 個人介紹站｜網站架構說明】
+更新：2026-10-14｜
+
+一、技術棧
+後端：Python 3.15 + Flask 3.1.3 + PyMySQL 1.2.3 + Werkzeug 3.1.9
+前端：Jinja2 模板 + HTML/CSS/JS (無框架) + Canvas
+資料庫：MySQL/MariaDB (本機 alan_python，utf8mb4)
+部署：本機 python app.py :5000；雲端 Alwaysdata Python WSGI (uWSGI)
+
+二、目錄結構
+alan_python_mysql/
+├ app.py (Flask主程式，241行，前台+後台路由，尾端 application=app 給uWSGI)
+├ wsgi.py (Alwaysdata進入點，from app import app as application)
+├ config.py (DB_HOST/PORT/NAME/USER/PASSWORD + SECRET_KEY，皆可用環境變數覆寫)
+├ db.py (get_conn/query_all/query_one/execute，DictCursor+autocommit)
+├ init_db.py (讀schema.sql建表+種子：about1筆/works3筆/root帳號)
+├ schema.sql (4表建表語法) + alan_python.sql (匯出備份)
+├ requirements.txt (Flask/PyMySQL/Werkzeug)
+├ conn/conn.inc.php (原始PHP連線參考，與config.py一致)
+├ static/css/style.css (前台科技感) + admin.css (後台深色科技感)
+├ static/js/main.js (89行：粒子星空/打字機/reveal/技能條/3D傾斜/篩選/AJAX/toTop)
+├ templates/frontend/index.html (一頁式 Hero+關於我+作品+聯絡)
+├ templates/admin/base.html(側欄佈局) login.html dashboard.html
+│  about_form.html works_list.html works_form.html messages_list.html admins_list/form.html
+├ 文件/communicate.txt (歷程紀錄，下次先讀它)
+└ 結構說明.txt (本檔案)
+
+三、資料庫 alan_python (4表)
+1. about 關於我：id/name/title/subtitle/description/skills(逗號分隔)/avatar_url/email/phone/location/updated_at
+2. works 作品分享：id/title/category/description/image_url/link_url/tech_tags/sort_order(大到小)/is_show/created_at
+3. messages 聯絡我：id/name/email/subject/message/is_read(0未讀1已讀)/created_at
+4. admins 管理員：id/username(unique)/password_hash(werkzeug雜湊)/nickname/created_at，預設 root/alan1123
+
+四、路由總覽 (app.py)
+前台：GET / (讀about+works is_show=1)；POST /contact (一般POST+AJAX JSON，寫messages)
+後台：GET+POST /admin/login；GET /admin/logout；GET /admin (統計works/works_show/unread/messages/admins+最新5留言)
+ /admin/about (單筆編輯)；/admin/works +/add +/edit/<wid> +POST /delete/<wid>
+ /admin/messages(?only=unread) +POST /read|unread|delete/<mid>
+ /admin/admins +/add +POST /delete/<aid>(防刪自己、防刪到0人)
+共用：login_required裝飾器 + inject_admin (暱稱) + flash(success/error)
+
+五、前台一頁式 (index.html + style.css + main.js)
+區塊：nav(關於我/作品/聯絡/後台) → Hero(姓名職稱+打字機#typed+技能tag) → #about(頭貼+聯絡卡+介紹+技能條) → #works(分類篩選[data-filter]+卡片[data-tilt][data-cat]) → #contact(AJAX表單#contactForm) → footer + #toTop + #toast
+特效：#stars粒子(滑鼠排斥)/.grid-bg網格/漸層字.grad/玻璃卡.card/.reveal進場/.bar技能條/作品篩選/聯絡AJAX/toTop
+
+六、後台深色科技感 (admin.css + base.html)
+側欄：儀表板/關於我/作品/留言/管理員/預覽前台；主區 .stat .panel table .badge(ok/no) .btn/.danger/.ghost；login獨立置中卡片(已移除帳密提示文字)。
+
+七、啟動與部署
+本機：cd專案；pip install -r requirements.txt；python init_db.py(初次)；python app.py；開 http://127.0.0.1:5000/，後台 /admin
+注意：Flask要先跑再開瀏覽器；勿用 XAMPP localhost路徑；本機清掉雲端DB_*環境變數才會連127.0.0.1
+Alwaysdata：類型必須 Python WSGI；Application path後格填 www/wsgi.py:application (前綴/home/alanwork/鎖死屬正常)；Working dir /home/alanwork/www/；SSH cd ~/www/ 用python(非python3) pip install；環境變數在 Sites>該站設定；Python3.13要一致；改完Restart；日誌 ~/admin/logs/uwsgi/*.log
+
+八、已驗證
+本機app.py語法OK、MySQL OK、/與/admin/login皆200；雲端SSH三測全過(flask/pymysql/wsgi/SELECT1)；
+

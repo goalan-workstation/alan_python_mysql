@@ -1,0 +1,17 @@
+{% extends 'admin/base.html' %}
+{% block title %}{{ '編輯作品' if row else '新增作品' }}{% endblock %}
+{% block content %}
+<div class="topbar"><h2>{{ '✏️ 編輯作品' if row else '＋ 新增作品' }}</h2></div>
+<div class="panel"><form method="post">
+<label>標題 *</label><input name="title" value="{{ row.title if row else '' }}" required>
+<label>分類</label><input name="category" value="{{ row.category if row else 'Web 開發' }}">
+<label>介紹</label><textarea name="description" rows="4">{{ row.description if row else '' }}</textarea>
+<label>封面圖URL</label><input name="image_url" value="{{ row.image_url if row else '' }}">
+<label>作品連結</label><input name="link_url" value="{{ row.link_url if row else '' }}">
+<label>技術標籤(逗號分隔)</label><input name="tech_tags" value="{{ row.tech_tags if row else '' }}">
+<label>排序(數字越大越前面)</label><input name="sort_order" type="number" value="{{ row.sort_order if row else 0 }}">
+<label><input type="checkbox" name="is_show" style="width:auto" {% if not row or row.is_show %}checked{% endif %}> 前台顯示</label>
+<br><button class="btn" type="submit">儲存</button>
+<a class="btn ghost" href="{{ url_for('admin_works') }}">取消</a>
+</form></div>
+{% endblock %}

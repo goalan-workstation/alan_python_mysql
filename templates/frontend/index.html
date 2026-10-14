@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ about.name if about else 'Alan' }}｜個人介紹・科技形象站</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="grid-bg"></div>
+<nav class="nav"><div class="nav-inner">
+<div class="logo">⚡ <b>ALAN.DEV</b></div>
+<div class="nav-links">
+<a href="#about">關於我</a><a href="#works">作品分享</a><a href="#contact">聯絡我</a>
+<a class="hide-m" href="{{ url_for('admin_login') }}">後台</a>
+<a class="btn" href="#contact">合作邀約</a>
+</div></div></nav>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for c,m in messages %}<div class="flash {{ c }}">{{ m }}</div>{% endfor %}{% endwith %}
+<header class="hero"><div class="wrap">
+<p class="reveal show" style="color:var(--cyan);letter-spacing:3px">HELLO, I'M</p>
+<h1>{{ about.name if about else 'Alan' }} <span class="grad">{{ about.title if about else 'Python 全端工程師' }}</span></h1>
+<div class="typed" id="typed">▸ Python 後端開發</div>
+<p style="color:var(--muted);max-width:640px">{{ about.subtitle if about else '用程式打造有溫度的科技體驗' }}</p>
+<div class="hero-card">
+<div style="display:flex;gap:.6rem;flex-wrap:wrap">
+{% for s in skills %}<span class="tag">⚡ {{ s }}</span>{% endfor %}
+</div>
+<div style="margin-top:1rem;display:flex;gap:.7rem;flex-wrap:wrap">
+<a class="btn" href="#works">觀看作品</a>
+<a class="btn btn-ghost" href="#about">認識我</a>
+</div></div>
+</div></header>
+<main>
+<section id="about"><div class="wrap">
+<h2 class="sec-title reveal">🧬 關於我 <span class="grad">ABOUT</span></h2>
+<p class="sec-sub reveal">從資料庫到前端特效，一手包辦的獨立開發者</p>
+<div class="about-grid">
+<div class="reveal"><img class="avatar" src="{{ about.avatar_url if about and about.avatar_url else 'https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Alan' }}" alt="avatar">
+<div class="card" style="margin-top:1rem">📍 {{ about.location if about else '' }}<br>✉️ {{ about.email if about else '' }}<br>📞 {{ about.phone if about else '' }}</div></div>
+<div class="reveal"><div class="card">
+<p style="white-space:pre-line;line-height:1.9">{{ about.description if about else '' }}</p>
+<div class="skills" style="margin-top:1rem">
+{% for s in skills %}
+<div class="skillbar"><div class="top"><span>{{ s }}</span><span>{{ 95 - loop.index0*7 }}%</span></div>
+<div class="bar"><i data-w="{{ 95 - loop.index0*7 }}"></i></div></div>
+{% endfor %}
+</div></div></div>
+</div></div></section>
+<section id="works"><div class="wrap">
+<h2 class="sec-title reveal">🚀 作品分享 <span class="grad">WORKS</span></h2>
+<p class="sec-sub reveal">後台新增作品後，前台即時連動顯示</p>
+<div class="reveal" style="margin-bottom:1.2rem;display:flex;gap:.5rem;flex-wrap:wrap">
+<button class="btn" data-filter="全部">全部</button>
+{% for c in works|map(attribute='category')|unique %}
+<button class="btn btn-ghost" data-filter="{{ c }}">{{ c }}</button>
+{% endfor %}
+</div>
+<div class="cards">
+{% for w in works %}
+<article class="card reveal" data-tilt data-cat="{{ w.category }}">
+<div class="thumb">{% if w.image_url %}<img src="{{ w.image_url }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">{% else %}💠{% endif %}</div>
+<span class="tag">{{ w.category }}</span>
+<h3>{{ w.title }}</h3>
+<p style="color:var(--muted);font-size:.9rem">{{ w.description }}</p>
+<div>{% for t in (w.tech_tags or '').split(',') %}{% if t.strip() %}<span class="tag">{{ t.strip() }}</span>{% endif %}{% endfor %}</div>
+{% if w.link_url %}<p><a href="{{ w.link_url }}" target="_blank">🔗 查看作品 →</a></p>{% endif %}
+</article>
+{% else %}<div class="card">尚無作品，後台新增後會顯示在這裡。</div>{% endfor %}
+</div></div></section>
+<section id="contact"><div class="wrap">
+<h2 class="sec-title reveal">📡 聯絡我 <span class="grad">CONTACT</span></h2>
+<p class="sec-sub reveal">留言會直接寫入資料庫，後台可查看與標記已讀</p>
+<form class="contact reveal" id="contactForm" action="{{ url_for('contact') }}" method="post">
+<input name="name" placeholder="你的姓名 *" required>
+<input name="email" type="email" placeholder="電子信箱 *" required>
+<input name="subject" placeholder="主旨 (例如：合作邀約)">
+<textarea name="message" rows="5" placeholder="想說的話 *" required></textarea>
+<button class="btn" type="submit">🚀 發送訊息</button>
+</form></div></section>
+</main>
+<footer>© 2026 {{ about.name if about else 'Alan' }}・Flask × MySQL CRUD 作品・<a href="{{ url_for('admin_login') }}">後台登入</a></footer>
+<button id="toTop">↑</button>
+<div class="toast" id="toast"></div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body></html>

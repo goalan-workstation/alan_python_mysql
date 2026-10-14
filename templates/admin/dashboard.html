@@ -1,0 +1,16 @@
+{% extends 'admin/base.html' %}
+{% block title %}儀表板{% endblock %}
+{% block content %}
+<div class="topbar"><h2>📊 系統儀表板</h2><span class="sp">Flask × MySQL 連線正常</span></div>
+<div class="grid">
+<div class="stat"><div>作品總數</div><div class="n">{{ stats.works }}</div><div style="color:var(--muted)">顯示中 {{ stats.works_show }}</div></div>
+<div class="stat"><div>未讀留言</div><div class="n">{{ stats.unread }}</div><div style="color:var(--muted)">累計 {{ stats.messages }}</div></div>
+<div class="stat"><div>管理員</div><div class="n">{{ stats.admins }}</div><div style="color:var(--muted)">帳號數量</div></div>
+</div>
+<div class="panel"><h3>📡 最新留言</h3>
+<table><tr><th>姓名</th><th>主旨</th><th>狀態</th><th>時間</th></tr>
+{% for m in recent %}<tr><td>{{ m.name }}</td><td>{{ m.subject or '(無主旨)' }}</td>
+<td>{% if m.is_read %}<span class="badge ok">已讀</span>{% else %}<span class="badge no">未讀</span>{% endif %}</td>
+<td>{{ m.created_at }}</td></tr>{% else %}<tr><td colspan="4">尚無留言</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

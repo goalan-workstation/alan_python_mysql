@@ -1,0 +1,39 @@
+【Alan Python MySQL CRUD 系統｜溝通與製作歷程】
+更新時間：2026-10-14
+專案位置：D:\xampp\htdocs\alan_python_mysql\
+
+一、使用者需求 (2026-10-14)
+1. 製作 Python CRUD 系統
+2. 先設計「個人介紹網站首頁」一頁式網站
+3. 風格：科技感 + 多一點 JS 特效
+4. 前台區塊：關於我 / 作品分享 / 聯絡我
+5. 連線資料庫資訊來源：conn/conn.inc.php（host 127.0.0.1:3306, db alan_python, user root, 密碼空白）
+6. 建立資料庫 table：「關於我」「作品分享」「聯絡我」「後台管理員管理」，預設管理員 root / alan1123
+7. 後台頁面風格：科技感、深色底
+8. 對話內容及製作歷程摘要存到 文件\communicate.txt，之後繼續製作先讀此檔
+
+二、已完成內容
+[後端] config.py(DB設定)/db.py(PyMySQL helper)/schema.sql(4表)/init_db.py(建表+種子，已執行)/app.py(Flask主程式，前後台皆200)/requirements.txt
+- about表：name/title/subtitle/description/skills/avatar_url/email/phone/location，已有1筆種子
+- works表：title/category/description/image_url/link_url/tech_tags/sort_order/is_show，已有3筆種子
+- messages表：name/email/subject/message/is_read/created_at
+- admins表：username/password_hash(雜湊)/nickname，已有 root/alan1123
+- 路由：前台 /、/contact(POST+AJAX)；後台 /admin/login/logout、/admin、/admin/about、/admin/works(+add/edit/delete)、/admin/messages(+read/unread/delete)、/admin/admins(+add/delete，防刪自己與刪到零人)
+[前台] templates/frontend/index.html 一頁式 Hero+關於我+作品分享+聯絡我；Canvas粒子星空(滑鼠排斥)、網格背景、漸層霓虹字、玻璃卡；JS 有打字機、scroll reveal、技能條、3D傾斜卡、作品篩選、表單AJAX+toast、回頂部
+[後台] templates/admin/ base深色側邊欄、login、dashboard(統計+最新留言)、about_form、works_list/form、messages_list、admins_list/form；static/css/admin.css 深色科技風
+[驗證] MySQL 有 about/admins/messages/works 四表；Flask / 與 /admin/login 皆 200
+
+三、啟動方式
+cd D:\xampp\htdocs\alan_python_mysql
+python -m pip install -r requirements.txt
+python init_db.py
+python app.py
+前台 http://127.0.0.1:5000/ 後台 http://127.0.0.1:5000/admin (root/alan1123)
+
+四、下次繼續前必讀
+1. 先讀本檔案 2. 確認 XAMPP MySQL(3306) 已啟動 3. 可擴充：圖片上傳、分頁搜尋、寄信、API化
+
+五、對話原文摘要
+User：要做 python CRUD（一頁式個人介紹首頁、科技感多JS特效、前台關於我/作品分享/聯絡我、用 conn.inc.php 連線、建四表預設 root/alan1123、後台深色科技感、紀錄存 文件communicate.txt 下次先讀）。
+AI：已建好 Flask+MySQL 全站並驗證上線，紀錄寫入本檔。
+

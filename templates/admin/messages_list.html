@@ -1,0 +1,25 @@
+{% extends 'admin/base.html' %}
+{% block title %}聯絡留言{% endblock %}
+{% block content %}
+<div class="topbar"><h2>📡 聯絡我留言</h2><span class="sp">
+<a class="btn {% if only!='unread' %}ghost{% endif %}" href="{{ url_for('admin_messages') }}">全部</a>
+<a class="btn {% if only!='all' %}ghost{% endif %}" href="{{ url_for('admin_messages', only='unread') }}">未讀</a>
+</span></div>
+<div class="panel"><table>
+<tr><th>ID</th><th>姓名/信箱</th><th>內容</th><th>狀態</th><th>時間</th><th>操作</th></tr>
+{% for r in rows %}
+<tr><td>{{ r.id }}</td><td>{{ r.name }}<br><span style="color:var(--muted)">{{ r.email }}</span></td>
+<td><b>{{ r.subject or '(無主旨)' }}</b><br>{{ r.message }}</td>
+<td>{% if r.is_read %}<span class="badge ok">已讀</span>{% else %}<span class="badge no">未讀</span>{% endif %}</td>
+<td>{{ r.created_at }}</td>
+<td><div class="row-btns">
+{% if r.is_read %}
+<form class="inline" method="post" action="{{ url_for('admin_messages_unread', mid=r.id) }}"><button class="btn ghost" type="submit">改未讀</button></form>
+{% else %}
+<form class="inline" method="post" action="{{ url_for('admin_messages_read', mid=r.id) }}"><button class="btn" type="submit">標已讀</button></form>
+{% endif %}
+<form class="inline" method="post" action="{{ url_for('admin_messages_delete', mid=r.id) }}" onsubmit="return confirm('確定刪除?')"><button class="btn danger" type="submit">刪除</button></form>
+</div></td></tr>
+{% else %}<tr><td colspan="6">尚無留言</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

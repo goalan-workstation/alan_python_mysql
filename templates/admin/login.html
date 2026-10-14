@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>後台登入｜ALAN ADMIN</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}"></head>
+<body><div class="login-wrap"><form class="login" method="post">
+<h2>⚡ <span style="color:var(--cyan)">ALAN ADMIN</span></h2>
+<p style="color:var(--muted)">深色科技戰情室・請登入</p>
+{% if error %}<div class="flash error">{{ error }}</div>{% endif %}
+<label>帳號</label><input name="username" placeholder="root" required>
+<label>密碼</label><input name="password" type="password" placeholder="••••••" required>
+<button class="btn" style="width:100%" type="submit">登入後台 →</button>
+<p style="color:var(--muted);font-size:.82rem"><a href="{{ url_for('index') }}">回前台</a></p>
+</form></div></body></html>

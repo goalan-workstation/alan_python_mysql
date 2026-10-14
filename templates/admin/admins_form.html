@@ -1,0 +1,13 @@
+{% extends 'admin/base.html' %}
+{% block title %}新增管理員{% endblock %}
+{% block content %}
+<div class="topbar"><h2>＋ 新增管理員</h2></div>
+<div class="panel"><form method="post">
+{% if error %}<div class="flash error">{{ error }}</div>{% endif %}
+<label>帳號 *</label><input name="username" required>
+<label>暱稱</label><input name="nickname">
+<label>密碼 *</label><input name="password" type="password" required>
+<button class="btn" type="submit">建立管理員</button>
+<a class="btn ghost" href="{{ url_for('admin_admins') }}">取消</a>
+</form></div>
+{% endblock %}

@@ -1,0 +1,37 @@
+/* 深色科技感後台 */
+:root{--bg:#060b18;--panel:#0c1430;--card:#111c3f;--line:rgba(0,229,255,.2);--cyan:#00e5ff;--violet:#7c4dff;--text:#e8f4ff;--muted:#93a7c9;--ok:#00ffaa;--err:#ff5078}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1000px 500px at 20% -5%,rgba(124,77,255,.25),transparent),radial-gradient(900px 480px at 90% 0%,rgba(0,229,255,.18),transparent),var(--bg);color:var(--text);font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;min-height:100vh}
+a{color:var(--cyan)}
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.side{background:rgba(8,14,34,.9);border-right:1px solid var(--line);padding:1.2rem;position:sticky;top:0;height:100vh}
+.side h2{margin:.2rem 0 1rem;font-size:1.05rem;letter-spacing:1px}
+.side h2 b{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.side a.item{display:block;padding:.65rem .8rem;border-radius:12px;color:var(--text);text-decoration:none;margin:.25rem 0;border:1px solid transparent}
+.side a.item:hover,.side a.item.on{background:rgba(0,229,255,.1);border-color:var(--line)}
+.main{padding:1.6rem;max-width:1100px}
+.topbar{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+.topbar .sp{margin-left:auto;color:var(--muted);font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.stat{background:linear-gradient(180deg,rgba(0,229,255,.12),rgba(124,77,255,.08)),var(--card);border:1px solid var(--line);border-radius:16px;padding:1.1rem}
+.stat .n{font-size:1.9rem;font-weight:900;color:var(--cyan);text-shadow:0 0 16px rgba(0,229,255,.6)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.2rem;margin-top:1rem}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{padding:.65rem .6rem;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600}
+input,textarea,select{width:100%;padding:.65rem .8rem;border-radius:10px;border:1px solid var(--line);background:#050c20;color:var(--text);margin:.3rem 0 .9rem}
+label{font-size:.88rem;color:var(--muted)}
+.btn{display:inline-block;padding:.55rem 1.1rem;border-radius:999px;border:0;cursor:pointer;text-decoration:none;font-weight:700;color:#02131a;background:linear-gradient(90deg,var(--cyan),#8affff)}
+.btn.danger{background:linear-gradient(90deg,#ff5078,#ff8aa5);color:#2a020b}
+.btn.ghost{background:transparent;color:var(--cyan);border:1px solid var(--cyan)}
+.badge{display:inline-block;font-size:.72rem;padding:.15rem .6rem;border-radius:999px;border:1px solid var(--line)}
+.badge.ok{color:var(--ok);border-color:rgba(0,255,170,.5)}
+.badge.no{color:var(--err);border-color:rgba(255,80,120,.5)}
+.flash{padding:.7rem 1rem;border-radius:10px;margin-bottom:1rem}
+.flash.success{background:rgba(0,255,170,.1);border:1px solid rgba(0,255,170,.4)}
+.flash.error{background:rgba(255,80,120,.1);border:1px solid rgba(255,80,120,.45)}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.login{width:min(420px,95vw);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:2rem;box-shadow:0 0 60px rgba(0,229,255,.18)}
+.row-btns{display:flex;gap:.4rem;flex-wrap:wrap}
+form.inline{display:inline}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.side{height:auto;position:static}}

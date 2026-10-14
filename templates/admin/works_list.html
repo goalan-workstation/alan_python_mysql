@@ -1,0 +1,16 @@
+{% extends 'admin/base.html' %}
+{% block title %}作品分享{% endblock %}
+{% block content %}
+<div class="topbar"><h2>🚀 作品分享</h2><span class="sp"><a class="btn" href="{{ url_for('admin_works_add') }}">＋ 新增作品</a></span></div>
+<div class="panel"><table>
+<tr><th>ID</th><th>標題</th><th>分類</th><th>排序</th><th>顯示</th><th>操作</th></tr>
+{% for r in rows %}
+<tr><td>{{ r.id }}</td><td>{{ r.title }}</td><td>{{ r.category }}</td><td>{{ r.sort_order }}</td>
+<td>{% if r.is_show %}<span class="badge ok">顯示</span>{% else %}<span class="badge no">隱藏</span>{% endif %}</td>
+<td><div class="row-btns">
+<a class="btn ghost" href="{{ url_for('admin_works_edit', wid=r.id) }}">編輯</a>
+<form class="inline" method="post" action="{{ url_for('admin_works_delete', wid=r.id) }}" onsubmit="return confirm('確定刪除?')"><button class="btn danger" type="submit">刪除</button></form>
+</div></td></tr>
+{% else %}<tr><td colspan="6">尚無作品</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

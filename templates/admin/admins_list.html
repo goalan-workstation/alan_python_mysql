@@ -1,0 +1,12 @@
+{% extends 'admin/base.html' %}
+{% block title %}管理員管理{% endblock %}
+{% block content %}
+<div class="topbar"><h2>🛡️ 後台管理員管理</h2><span class="sp"><a class="btn" href="{{ url_for('admin_admins_add') }}">＋ 新增管理員</a></span></div>
+<div class="panel"><table>
+<tr><th>ID</th><th>帳號</th><th>暱稱</th><th>建立時間</th><th>操作</th></tr>
+{% for r in rows %}
+<tr><td>{{ r.id }}</td><td>{{ r.username }}</td><td>{{ r.nickname }}</td><td>{{ r.created_at }}</td>
+<td><form class="inline" method="post" action="{{ url_for('admin_admins_delete', aid=r.id) }}" onsubmit="return confirm('確定刪除 {{ r.username }}?')"><button class="btn danger" type="submit">刪除</button></form></td></tr>
+{% endfor %}
+</table></div>
+{% endblock %}
